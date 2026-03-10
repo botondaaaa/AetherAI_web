@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>AetherAI</title>
+
+<style>
+body{
+font-family:Arial;
+background:#111;
+color:white;
+text-align:center;
+}
+
+#chat{
+width:500px;
+height:400px;
+overflow:auto;
+border:1px solid gray;
+margin:auto;
+padding:10px;
+}
+
+input{
+width:400px;
+padding:10px;
+}
+
+button{
+padding:10px;
+}
+</style>
+
+</head>
+
+<body>
+
+<h1>AetherAI 🤖</h1>
+
+<div id="chat"></div>
+
+<br>
+
+<input id="msg" placeholder="Írj valamit...">
+<button onclick="send()">Küldés</button>
+
+<script>
+
+async function send(){
+
+let input=document.getElementById("msg")
+let msg=input.value
+
+let chat=document.getElementById("chat")
+
+chat.innerHTML+="<p><b>Te:</b> "+msg+"</p>"
+
+let res=await fetch("/chat",{
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body:JSON.stringify({message:msg})
+})
+
+let data=await res.json()
+
+chat.innerHTML+="<p><b>AetherAI:</b> "+data.reply+"</p>"
+
+input.value=""
+
+chat.scrollTop=chat.scrollHeight
+}
+
+</script>
+
+</body>
+</html>
